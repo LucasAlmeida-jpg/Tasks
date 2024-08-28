@@ -14,7 +14,7 @@ class TaskController extends Controller
 {
     public function index(Request $request){
         $tasks = QueryBuilder::for(Task::class)
-        ->defaultSort('created_at')
+        ->defaultSort('-created_at')
         ->allowedFilters('is_done')
         ->allowedSorts(['title', 'is_done', 'created_at'])
         ->paginate();
