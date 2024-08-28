@@ -8,11 +8,17 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TaskController extends Controller
 {
     public function index(Request $request){
-        return new TaskCollection(Task::all());
+        $tasks = QueryBuilder::for(Task::class)
+        ->defaultSort('-created_at')
+        ->allowedFilters('is_done')
+        ->allowedSorts(['title', 'is_done', 'created_at'])
+        ->paginate();
+        return new TaskCollection( $tasks );
     }
 
     public function show(Request $request, Task $task){
